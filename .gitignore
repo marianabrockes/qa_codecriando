@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Variáveis de ambiente
+.env
+
+# PostgreSQL
+*.sql.bak
+
+# Node (Cypress)
+node_modules/
+cypress/videos/
+cypress/screenshots/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
