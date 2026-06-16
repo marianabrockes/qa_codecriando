@@ -23,8 +23,8 @@
 1. Enviar POST para `/register` com os dados acima.
 
 **Resultado esperado:** Status 201. Corpo da resposta contém `mensagem` e objeto `usuario` com os dados cadastrados sem o campo `senha`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 201. Corpo contém `mensagem` e objeto `usuario` com id, nome, email, perfil e criado_em. Campo `senha` não exposto na resposta. Campo `criado_em` retorna com microssegundos (ex: `2026-06-15T18:53:13.703567`).  
+**Status:** Passou
 
 ---
 
@@ -49,8 +49,8 @@
 1. Enviar POST para `/register` com os dados acima.
 
 **Resultado esperado:** Status 201. Corpo da resposta contém `mensagem` e objeto `usuario`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 201. Corpo contém `mensagem` e objeto `usuario` com id, nome, email, perfil e criado_em. Campo `senha` não exposto na resposta.  
+**Status:** Passou
 
 ---
 
@@ -75,8 +75,8 @@
 1. Enviar POST para `/register` com email já cadastrado.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando que o email já está cadastrado.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Email já cadastrado".  
+**Status:** Passou
 
 ---
 
@@ -99,8 +99,8 @@
 1. Enviar POST para `/register` sem os campos `senha` e `perfil`.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando campos obrigatórios.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Todos os campos são obrigatórios".  
+**Status:** Passou
 
 ---
 
@@ -125,8 +125,8 @@
 1. Enviar POST para `/register` com perfil inválido.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando os valores aceitos para perfil.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Perfil deve ser professor ou estudante".  
+**Status:** Passou
 
 ---
 
@@ -141,8 +141,8 @@
 1. Enviar POST para `/register` sem corpo.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo da resposta em HTML em vez de JSON. Mensagem expõe detalhes internos: "Failed to decode JSON object: Expecting value: line 1 column 1 (char 0)".  
+**Status:** Falhou
 
 ---
 
@@ -167,8 +167,8 @@
 1. Enviar POST para `/login` com os dados acima.
 
 **Resultado esperado:** Status 200. Corpo contém `token` JWT e objeto `usuario`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 200. Corpo contém `token` JWT e objeto `usuario` com id, nome, email, perfil e criado_em.  
+**Status:** Passou
 
 ---
 
@@ -191,8 +191,8 @@
 1. Enviar POST para `/login` com senha incorreta.
 
 **Resultado esperado:** Status 401. Corpo contém mensagem de erro informando credenciais inválidas.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 401. Corpo contém `erro` com mensagem "Email ou senha incorretos".  
+**Status:** Passou
 
 ---
 
@@ -215,8 +215,8 @@
 1. Enviar POST para `/login` com email não cadastrado.
 
 **Resultado esperado:** Status 401. Corpo contém mensagem de erro informando credenciais inválidas.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 401. Corpo contém `erro` com mensagem "Email ou senha incorretos".  
+**Status:** Passou
 
 ---
 
@@ -231,8 +231,8 @@
 1. Enviar GET para `/projetos` sem token JWT.
 
 **Resultado esperado:** Status 401.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 401. Corpo contém `msg` com mensagem "Missing Authorization Header".  
+**Status:** Passou
 
 ---
 
@@ -258,8 +258,8 @@
 1. Enviar POST para `/projetos` com token da professora e os dados acima.
 
 **Resultado esperado:** Status 201. Projeto criado com status `rascunho`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 201. Projeto criado com sucesso. Corpo contém objeto `projeto` com id, titulo, descricao, nivel, status `rascunho`, professor_id e total_etapas 0. Campo `criado_em` retorna com microssegundos, mesmo padrão identificado no CT-001.  
+**Status:** Passou
 
 ---
 
@@ -283,8 +283,8 @@
 1. Enviar POST para `/projetos` com token da estudante.
 
 **Resultado esperado:** Status 403. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 403. Corpo contém `erro` com mensagem "Apenas professor(a) pode criar projetos".  
+**Status:** Passou
 
 ---
 
@@ -306,8 +306,8 @@
 1. Enviar POST para `/projetos` sem `descricao` e `nivel`.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém 'erro'com mensagem "Todos os camois são obrigatótios".
+**Status:** Passou
 
 ---
 
