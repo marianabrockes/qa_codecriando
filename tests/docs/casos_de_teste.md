@@ -323,8 +323,8 @@
 1. Enviar PATCH para `/projetos/{projeto_id}/publicar` com token da professora.
 
 **Resultado esperado:** Status 200. Status do projeto muda para `publicado`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 200. Projeto publicado com sucesso. Campo `status` mudou para `publicado` e `total_etapas` mostra 1.  
+**Status:** Passou
 
 ---
 
@@ -338,8 +338,8 @@
 1. Enviar PATCH para `/projetos/{projeto_id}/publicar` com token da professora.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando que o projeto precisa ter pelo menos uma etapa.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Não é possível publicar projeto sem etapas".  
+**Status:** Passou
 
 ---
 
@@ -353,8 +353,8 @@
 1. Enviar PATCH para `/projetos/{projeto_id}/publicar` com token da professora.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Projeto já está publicado".  
+**Status:** Passou
 
 ---
 
