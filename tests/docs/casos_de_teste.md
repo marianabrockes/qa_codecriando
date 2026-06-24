@@ -306,7 +306,7 @@
 1. Enviar POST para `/projetos` sem `descricao` e `nivel`.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado obtido:** Status 400. Corpo contém 'erro'com mensagem "Todos os camois são obrigatótios".
+**Resultado obtido:** Status 400. Corpo contém 'erro'com mensagem "Todos os campos são obrigatórios".
 **Status:** Passou
 
 ---
