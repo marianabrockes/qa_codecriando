@@ -378,8 +378,8 @@
 1. Enviar POST para `/matriculas` com token da estudante.
 
 **Resultado esperado:** Status 201. Matrícula criada com sucesso.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 201. Matrícula criada com sucesso. Corpo contém objeto `matricula` com id, estudante_id, projeto_id e matriculado_em.  
+**Status:** Passou
 
 ---
 
@@ -401,8 +401,8 @@
 1. Enviar POST para `/matriculas` com token da estudante no mesmo projeto.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando que já está matriculada.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Estudante já matriculada neste projeto".  
+**Status:** Passou
 
 ---
 
@@ -424,8 +424,8 @@
 1. Enviar POST para `/matriculas` com token da professora.
 
 **Resultado esperado:** Status 403. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 403. Corpo contém `erro` com mensagem "Apenas estudante pode se matricular em projetos".  
+**Status:** Passou
 
 ---
 
@@ -451,8 +451,8 @@
 1. Enviar POST para `/submissoes` com token da estudante.
 
 **Resultado esperado:** Status 201. Submissão criada com status `pendente`.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 201. Submissão criada com sucesso. Corpo contém objeto `submissao` com id, matricula_id, etapa_id, conteudo, status `pendente`, feedback e avaliado_em nulos, e enviado_em com timestamp.  
+**Status:** Passou
 
 ---
 
@@ -476,8 +476,8 @@
 1. Enviar POST para `/submissoes` com token da estudante tentando submeter etapa 2.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando que a etapa anterior precisa ser aprovada.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "A etapa anterior precisa ser aprovada antes de continuar".  
+**Status:** Passou
 
 ---
 
@@ -502,8 +502,8 @@
 1. Enviar PATCH para `/submissoes/{submissao_id}/avaliar` com token da professora.
 
 **Resultado esperado:** Status 200. Status da submissão muda para `aprovado`. Campo `avaliado_em` preenchido.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 200. Corpo contém objeto `submissao` com status `aprovado`, feedback salvo e campo `avaliado_em` preenchido.  
+**Status:** Passou
 
 ---
 
@@ -526,8 +526,8 @@
 1. Enviar PATCH para `/submissoes/{submissao_id}/avaliar` com token da professora.
 
 **Resultado esperado:** Status 200. Status da submissão muda para `reprovado`. Feedback salvo.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 200. Corpo contém objeto `submissao` com status `reprovado`, feedback salvo e campo `avaliado_em` preenchido.  
+**Status:** Passou
 
 ---
 
@@ -549,8 +549,8 @@
 1. Enviar PATCH para `/submissoes/{submissao_id}/avaliar` com token da estudante.
 
 **Resultado esperado:** Status 403. Corpo contém mensagem de erro.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 403. Corpo contém `erro` com mensagem "Sem permissão para avaliar esta submissão".  
+**Status:** Passou
 
 ---
 
@@ -572,5 +572,5 @@
 1. Enviar PATCH para `/submissoes/{submissao_id}/avaliar` com status inválido.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro informando os valores aceitos.  
-**Resultado obtido:**  
-**Status:**
+**Resultado obtido:** Status 400. Corpo contém `erro` com mensagem "Status deve ser aprovado ou reprovado".  
+**Status:** Passou
