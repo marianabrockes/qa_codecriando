@@ -49,7 +49,7 @@ def criar_submissao():
         description: Matrícula ou etapa não encontrada
     """
     usuario_id = get_jwt_identity()
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400
@@ -194,7 +194,7 @@ def avaliar_submissao(submissao_id):
     if str(projeto.professor_id) != str(usuario_id):
         return jsonify({'erro': 'Sem permissão para avaliar esta submissão'}), 403
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400

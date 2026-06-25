@@ -43,7 +43,7 @@ def register():
       400:
         description: Dados inválidos ou email já cadastrado
     """
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400
@@ -103,7 +103,7 @@ def login():
       401:
         description: Credenciais inválidas
     """
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400

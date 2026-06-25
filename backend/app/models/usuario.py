@@ -21,5 +21,5 @@ class Usuario(db.Model):
             'nome': self.nome,
             'email': self.email,
             'perfil': self.perfil,
-            'criado_em': self.criado_em.isoformat()
+            'criado_em': self.criado_em.isoformat(timespec='seconds')
         }

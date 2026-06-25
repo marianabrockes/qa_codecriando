@@ -49,7 +49,7 @@ def criar_projeto():
     if usuario.perfil != 'professor':
         return jsonify({'erro': 'Apenas professor(a) pode criar projetos'}), 403
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400
@@ -170,7 +170,7 @@ def editar_projeto(projeto_id):
     if projeto.status == 'publicado':
         return jsonify({'erro': 'Não é possível editar projeto já publicado'}), 400
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if dados.get('titulo'):
         projeto.titulo = dados.get('titulo')

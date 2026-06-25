@@ -141,8 +141,8 @@
 1. Enviar POST para `/register` sem corpo.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado obtido:** Status 400. Corpo da resposta em HTML em vez de JSON. Mensagem expõe detalhes internos: "Failed to decode JSON object: Expecting value: line 1 column 1 (char 0)".  
-**Status:** Falhou
+**Resultado btido após reteste:** Status 400. Corpo contém erro com mensagem "Nenhum dado enviado".
+**Status:** Passou
 
 ---
 

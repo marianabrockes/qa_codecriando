@@ -43,7 +43,7 @@ def criar_matricula():
     if usuario.perfil != 'estudante':
         return jsonify({'erro': 'Apenas estudante pode se matricular em projetos'}), 403
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400

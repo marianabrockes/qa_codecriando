@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -18,6 +18,19 @@ def create_app():
     jwt.init_app(app)
     CORS(app)
     Swagger(app)
+
+    # Handlers de erro JWT
+    @jwt.unauthorized_loader
+    def unauthorized_callback(error):
+        return jsonify({'erro': 'Token de acesso ausente'}), 401
+
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return jsonify({'erro': 'Token de acesso inválido'}), 422
+
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_data):
+        return jsonify({'erro': 'Token de acesso expirado'}), 401
 
     # Registra rotas
     from app.routes.auth import auth_bp

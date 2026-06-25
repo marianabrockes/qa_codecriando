@@ -21,6 +21,6 @@ class Submissao(db.Model):
             'conteudo': self.conteudo,
             'status': self.status,
             'feedback': self.feedback,
-            'enviado_em': self.enviado_em.isoformat(),
-            'avaliado_em': self.avaliado_em.isoformat() if self.avaliado_em else None
+            'enviado_em': self.enviado_em.isoformat(timespec='seconds'),
+            'avaliado_em': self.avaliado_em.isoformat(timespec='seconds') if self.avaliado_em else None
         }

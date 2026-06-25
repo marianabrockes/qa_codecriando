@@ -24,6 +24,6 @@ class Projeto(db.Model):
             'nivel': self.nivel,
             'status': self.status,
             'professor_id': self.professor_id,
-            'criado_em': self.criado_em.isoformat(),
+            'criado_em': self.criado_em.isoformat(timespec='seconds'),
             'total_etapas': len(self.etapas)
         }

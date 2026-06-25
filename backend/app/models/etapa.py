@@ -21,5 +21,5 @@ class Etapa(db.Model):
             'titulo': self.titulo,
             'instrucao': self.instrucao,
             'ordem': self.ordem,
-            'criado_em': self.criado_em.isoformat()
+            'criado_em': self.criado_em.isoformat(timespec='seconds'),
         }

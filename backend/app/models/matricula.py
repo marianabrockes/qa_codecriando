@@ -17,5 +17,5 @@ class Matricula(db.Model):
             'id': self.id,
             'estudante_id': self.estudante_id,
             'projeto_id': self.projeto_id,
-            'matriculado_em': self.matriculado_em.isoformat()
+            'matriculado_em': self.matriculado_em.isoformat(timespec='seconds')
         }

@@ -60,7 +60,7 @@ def criar_etapa(projeto_id):
     if projeto.status == 'publicado':
         return jsonify({'erro': 'Não é possível adicionar etapas em projeto já publicado'}), 400
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if not dados:
         return jsonify({'erro': 'Nenhum dado enviado'}), 400
@@ -134,7 +134,7 @@ def editar_etapa(etapa_id):
     if etapa.projeto.status == 'publicado':
         return jsonify({'erro': 'Não é possível editar etapa de projeto já publicado'}), 400
 
-    dados = request.get_json()
+    dados = request.get_json(silent=True)
 
     if dados.get('titulo'):
         etapa.titulo = dados.get('titulo')

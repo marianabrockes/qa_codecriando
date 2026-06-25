@@ -14,11 +14,11 @@
 
 Foram executados 25 casos de teste cobrindo as funcionalidades principais da API. Durante a execução, um caso de teste falhou (CT-006), dois bugs foram registrados e uma inconsistência de comportamento foi identificada.
 
-| ID      | Título                                                                               | Severidade | Status                        |
-| ------- | ------------------------------------------------------------------------------------ | ---------- | ----------------------------- |
-| BUG-001 | Campo `criado_em` retorna com microssegundos em todos os endpoints                   | Baixa      | Aberto                        |
-| BUG-002 | POST /register sem corpo retorna HTML com erro interno exposto                       | Média      | Corrigido, aguardando reteste |
-| OBS-001 | Inconsistência no campo de erro entre respostas da aplicação e do Flask-JWT-Extended | Baixa      | Aberto                        |
+| ID      | Título                                                                               | Severidade | Status                |
+| ------- | ------------------------------------------------------------------------------------ | ---------- | --------------------- |
+| BUG-001 | Campo `criado_em` retorna com microssegundos em todos os endpoints                   | Baixa      | Corrigido e retestado |
+| BUG-002 | POST /register sem corpo retorna HTML com erro interno exposto                       | Média      | Corrigido e retestado |
+| OBS-001 | Inconsistência no campo de erro entre respostas da aplicação e do Flask-JWT-Extended | Baixa      | Corrigido e retestado |
 
 ---
 
@@ -28,7 +28,7 @@ Foram executados 25 casos de teste cobrindo as funcionalidades principais da API
 
 **Severidade:** Baixa  
 **Prioridade:** Baixa  
-**Status:** Aberto  
+**Status:** Corrigido e retestado
 **Identificado em:** CT-001  
 **Data:** junho/2026
 
@@ -68,7 +68,7 @@ O problema não impede o funcionamento da API, mas gera inconsistência no forma
 
 O método `to_dict()` dos models utiliza `.isoformat()` diretamente sobre o objeto `datetime` do Python. Quando o objeto contém microssegundos, o `.isoformat()` os inclui na saída por padrão.
 
-### Correção sugerida
+### Correção aplicada
 
 Substituir `.isoformat()` por `.isoformat(timespec='seconds')` ou `.strftime('%Y-%m-%dT%H:%M:%S')` nos métodos `to_dict()` de todos os models afetados.
 
@@ -80,7 +80,7 @@ Substituir `.isoformat()` por `.isoformat(timespec='seconds')` ou `.strftime('%Y
 
 **Severidade:** Média  
 **Prioridade:** Alta  
-**Status:** Corrigido, aguardando reteste  
+**Status:** Corrigido e retestado
 **Identificado em:** CT-006  
 **Data:** junho/2026
 
@@ -114,13 +114,11 @@ Failed to decode JSON object: Expecting value: line 1 column 1 (char 0)
 Adicionada verificação explícita do corpo da requisição antes de processar os dados, retornando uma resposta JSON padronizada quando nenhum dado é recebido:
 
 ```python
-dados = request.get_json()
+dados = request.get_json(silent=True)
 
 if not dados:
     return jsonify({'erro': 'Nenhum dado enviado'}), 400
 ```
-
-**Reteste pendente.**
 
 ---
 
@@ -130,7 +128,7 @@ if not dados:
 
 **Severidade:** Baixa  
 **Prioridade:** Baixa  
-**Status:** Aberto  
+**Status:** Corrigido e retestado  
 **Identificado em:** CT-010  
 **Data:** junho/2026
 
@@ -164,7 +162,7 @@ Quem consome a API precisa tratar dois formatos de erro diferentes dependendo da
 
 O Flask-JWT-Extended utiliza seu próprio formato de resposta para erros de autenticação, e a aplicação não sobrescreve esse comportamento com handlers personalizados.
 
-### Correção sugerida
+### Correção aplicada
 
 Configurar handlers de erro personalizados para os eventos de autenticação JWT, utilizando os decorators disponibilizados pela biblioteca:
 
