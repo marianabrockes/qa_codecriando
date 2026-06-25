@@ -141,7 +141,7 @@
 1. Enviar POST para `/register` sem corpo.
 
 **Resultado esperado:** Status 400. Corpo contém mensagem de erro.  
-**Resultado btido após reteste:** Status 400. Corpo contém erro com mensagem "Nenhum dado enviado".
+**Resultado btido após reteste:** Status 400. Corpo contém `erro` com mensagem "Nenhum dado enviado". Retestado após correção.
 **Status:** Passou
 
 ---
