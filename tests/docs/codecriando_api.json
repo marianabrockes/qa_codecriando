@@ -1,0 +1,1027 @@
+{
+  "info": {
+    "_postman_id": "fa945ea8-3953-4bbf-b088-3e13b2d642a0",
+    "name": "CodeCriando API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55442060",
+    "_collection_link": "https://go.postman.co/collection/55442060-fa945ea8-3953-4bbf-b088-3e13b2d642a0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "CT-001 - Cadastro professor(a) válido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Manu Silva\",\n  \"email\": \"manu@email.com\",\n  \"senha\": \"123456\",\n  \"perfil\": \"professor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-002 — Cadastro estudante válido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Lua Santos\",\n  \"email\": \"lua@email.com\",\n  \"senha\": \"123456\",\n  \"perfil\": \"estudante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-003 — Cadastro email duplicado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Manu Duplicada\",\n  \"email\": \"manu@email.com\",\n  \"senha\": \"123456\",\n  \"perfil\": \"professor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-004 — Cadastro sem campos obrigatórios",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Manu Silva\",\n  \"email\": \"manu2@email.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-005 — Cadastro com perfil inválido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Manu Silva\",\n  \"email\": \"manu3@email.com\",\n  \"senha\": \"123456\",\n  \"perfil\": \"administrador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-006 — Cadastro sem corpo na requisição.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-007 — Login com credenciais válidas (professor(a))",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manu@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-008 — Login com senha incorreta.",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manu@email.com\",\n  \"senha\": \"senhaerrada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-009 - Login com email não cadastrado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"naoexiste@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-010 — Acesso a rota protegida sem token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login estudante (Lua) — apoio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"lua@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Projetos",
+      "item": [
+        {
+          "name": "CT-011 — Criar projeto válido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Minha primeira página web\",\n  \"descricao\": \"Aprenda a criar uma página HTML do zero\",\n  \"nivel\": \"iniciante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-012 — Criar projeto como estudante",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Projeto indevido\",\n  \"descricao\": \"Tentativa de criar projeto como estudante\",\n  \"nivel\": \"iniciante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-013 — Criar projeto sem campos obrigatórios",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Projeto incompleto\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-014 — Publicar projeto com etapas",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos/1/publicar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "1",
+                "publicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-015 — Publicar projeto sem etapas",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos/4/publicar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "4",
+                "publicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar projeto 2 — apoio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Projeto sem etapas\",\n  \"descricao\": \"Projeto para testar publicação sem etapas\",\n  \"nivel\": \"iniciante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-016 — Publicar projeto já publicado",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos/1/publicar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "1",
+                "publicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Criar projeto para CT-021",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Projeto com duas etapas\",\n  \"descricao\": \"Projeto criado para teste de sequência de etapas\",\n  \"nivel\": \"iniciante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Adicionar etapa 1 ao projeto 5",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Primeira etapa\",\n  \"instrucao\": \"Complete a primeira etapa do projeto\",\n  \"ordem\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos/5/etapas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "5",
+                "etapas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Adicionar etapa 2 ao projeto 5",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Segunda etapa\",\n  \"instrucao\": \"Complete a segunda etapa do projeto\",\n  \"ordem\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos/5/etapas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "5",
+                "etapas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Publicar projeto 5",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos/5/publicar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "5",
+                "publicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Matricular estudante no projeto 5",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projeto_id\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/matriculas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "matriculas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Listar projetos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projetos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Etapas",
+      "item": [
+        {
+          "name": "Criar etapa 1 — apoio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Crie sua primeira tag HTML\",\n  \"instrucao\": \"Use a tag h1 para escrever um título com o texto Olá Mundo\",\n  \"ordem\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/projetos/1/etapas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projetos",
+                "1",
+                "etapas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Matrículas",
+      "item": [
+        {
+          "name": "CT-017 — Matricular em projeto publicado",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projeto_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/matriculas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "matriculas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-018 — Matricular duas vezes no mesmo projeto",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projeto_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/matriculas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "matriculas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-019 — Professora tentando se matricular",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projeto_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/matriculas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "matriculas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Submissões",
+      "item": [
+        {
+          "name": "CT-020 — Submeter primeira etapa",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matricula_id\": 1,\n  \"etapa_id\": 1,\n  \"conteudo\": \"Minha solução para a etapa 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-021 — Submeter etapa 2 sem etapa 1 aprovada",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matricula_id\": 2,\n  \"etapa_id\": 3,\n  \"conteudo\": \"Tentativa de pular etapa\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-022 — Aprovar submissão com feedback",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"aprovado\",\n  \"feedback\": \"Muito bem! Solução correta.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes/1/avaliar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes",
+                "1",
+                "avaliar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Apoio — Criar submissão pendente para CT-023",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matricula_id\": 1,\n  \"etapa_id\": 1,\n  \"conteudo\": \"Minha solução para a etapa 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-023 — Reprovar submissão com feedback",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"reprovado\",\n  \"feedback\": \"Revise a tag h1 e tente novamente.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes/2/avaliar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes",
+                "2",
+                "avaliar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-024 — Estudante tentando avaliar submissão",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estudante}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"aprovado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes/2/avaliar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes",
+                "2",
+                "avaliar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CT-025 — Avaliar com status inválido",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"talvez\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/submissoes/2/avaliar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "submissoes",
+                "2",
+                "avaliar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token_professor}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
