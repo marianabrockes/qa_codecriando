@@ -14,6 +14,7 @@ This repository is the one that best represents how I approach QA and support wo
 - **Manual Testing**: 25 test cases executed by hand in Postman (`casos_de_teste.md`), covering the happy path, expected errors, and edge cases for every user story, each documented with test data, steps, expected result, and actual result.
 - **Bug Report**: 2 real bugs and 1 behavior inconsistency found during testing (`relatorio_de_bugs.md`), each with severity, reproduction steps, root cause analysis, and the fix that was actually applied to the code.
 - **Postman Collection**: exported collection with 35 requests covering the full API (`codecriando_api.json`).
+- **Automated Tests (in progress)**: PyTest + pytest-bdd structure set up in `tests/api/`, with Gherkin feature files and step definitions for authentication, projects, enrollments, and submissions, turning the existing acceptance criteria into executable scenarios.
 
 ---
 
@@ -69,15 +70,17 @@ Full reproduction steps, root cause, and applied fix for each one are in `tests/
 - **Flask-SQLAlchemy / PostgreSQL** - data persistence
 - **Flasgger** - Swagger documentation
 - **Postman** - manual API testing
+- **PyTest / pytest-bdd** - automated API testing (in progress)
 - **Docker / Docker Compose** - local environment (API + PostgreSQL)
 
 ---
 
 ## Roadmap
 
-The next step for this project is test automation. `pytest`, `pytest-bdd`, and `gherkin-official` are already set up as dependencies, and the test plan defines the intended coverage, but the automated suite itself is still in progress:
+Test automation is in progress. The project structure for API tests with PyTest and pytest-bdd is already set up, with Gherkin feature files and step definitions for authentication, projects, enrollments, and submissions, but the scenarios themselves are still being written and this is not yet a complete, passing suite.
 
-- [ ] Automated API tests with PyTest and pytest-bdd, turning the existing Gherkin-style acceptance criteria into executable scenarios
+- [x] PyTest + pytest-bdd project structure (`conftest.py`, feature files, step definitions)
+- [ ] Complete and validate all automated API scenarios
 - [ ] End-to-end frontend tests with Cypress
 - [ ] CI pipeline with GitHub Actions to run the suite on every push
 
@@ -117,6 +120,10 @@ qa_codecriando/
 │   ├── Dockerfile
 │   └── run.py
 ├── tests/
+│   ├── api/               # PyTest + pytest-bdd (in progress)
+│   │   ├── conftest.py
+│   │   ├── features/
+│   │   └── steps/
 │   └── docs/
 │       ├── historias_de_usuario.md
 │       ├── plano_de_testes.md
