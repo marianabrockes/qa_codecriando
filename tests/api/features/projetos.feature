@@ -24,15 +24,10 @@ Funcionalidade: Projetos
 
   Cenário: Publicar projeto sem etapas
     Dado que estou autenticada como professor(a)
-    Quando eu envio PATCH para publicar o projeto 4
+    E existe um projeto em rascunho sem etapas
+    Quando eu publico esse projeto
     Então a resposta deve ter status 400
     E a resposta deve conter erro "Não é possível publicar projeto sem etapas"
-
-  Cenário: Publicar projeto já publicado
-    Dado que estou autenticada como professor(a)
-    Quando eu envio PATCH para publicar o projeto 1
-    Então a resposta deve ter status 400
-    E a resposta deve conter erro "Projeto já está publicado"
 
   Cenário: Publicar projeto com etapas
     Dado que estou autenticada como professor(a)
@@ -40,3 +35,11 @@ Funcionalidade: Projetos
     Quando eu publico esse projeto
     Então a resposta deve ter status 200
     E o projeto deve ter status "publicado"
+
+  Cenário: Publicar projeto já publicado
+    Dado que estou autenticada como professor(a)
+    E existe um projeto em rascunho com pelo menos uma etapa
+    E esse projeto já foi publicado
+    Quando eu publico esse projeto
+    Então a resposta deve ter status 400
+    E a resposta deve conter erro "Projeto já está publicado"

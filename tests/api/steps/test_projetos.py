@@ -6,7 +6,18 @@ scenarios('../features/projetos.feature')
 BASE_URL = "http://localhost:5001"
 
 
-@given('existe um projeto em rascunho com pelo menos uma etapa')
+@given("existe um projeto em rascunho sem etapas")
+def projeto_rascunho_sem_etapa(context):
+    response = requests.post(f"{BASE_URL}/projetos", headers=context['headers'], json={
+        "titulo": "Projeto sem etapas para teste",
+        "descricao": "Criado automaticamente durante testes",
+        "nivel": "iniciante"
+    })
+    assert response.status_code == 201, f"Falha ao criar projeto: {response.text}"
+    context['projeto_id'] = response.json()["projeto"]["id"]
+
+
+@given("existe um projeto em rascunho com pelo menos uma etapa")
 def projeto_rascunho_com_etapa(context):
     response = requests.post(f"{BASE_URL}/projetos", headers=context['headers'], json={
         "titulo": "Projeto para publicação automática",
@@ -29,6 +40,15 @@ def projeto_rascunho_com_etapa(context):
     assert response.status_code == 201, f"Falha ao criar etapa: {response.text}"
 
 
+@given("esse projeto já foi publicado")
+def projeto_ja_publicado(context):
+    response = requests.patch(
+        f"{BASE_URL}/projetos/{context['projeto_id']}/publicar",
+        headers=context['headers']
+    )
+    assert response.status_code == 200, f"Falha ao publicar projeto: {response.text}"
+
+
 @when('eu envio POST para "/projetos" com dados válidos')
 def criar_projeto(context):
     context['response'] = requests.post(f"{BASE_URL}/projetos", headers=context['headers'], json={
@@ -45,27 +65,10 @@ def criar_projeto_incompleto(context):
     })
 
 
-@when('eu envio PATCH para publicar o projeto 4')
-def publicar_projeto_sem_etapas(context):
-    context['response'] = requests.patch(
-        f"{BASE_URL}/projetos/4/publicar",
-        headers=context['headers']
-    )
-
-
-@when('eu envio PATCH para publicar o projeto 1')
-def publicar_projeto_ja_publicado(context):
-    context['response'] = requests.patch(
-        f"{BASE_URL}/projetos/1/publicar",
-        headers=context['headers']
-    )
-
-
-@when('eu publico esse projeto')
+@when("eu publico esse projeto")
 def publicar_projeto(context):
-    projeto_id = context['projeto_id']
     context['response'] = requests.patch(
-        f"{BASE_URL}/projetos/{projeto_id}/publicar",
+        f"{BASE_URL}/projetos/{context['projeto_id']}/publicar",
         headers=context['headers']
     )
 

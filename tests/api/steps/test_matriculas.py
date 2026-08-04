@@ -6,7 +6,7 @@ scenarios('../features/matriculas.feature')
 BASE_URL = "http://localhost:5001"
 
 
-@given('existe um projeto publicado disponível para nova matrícula')
+@given("existe um projeto publicado disponível para nova matrícula")
 def projeto_publicado_para_matricula(context, headers_professor):
     response = requests.post(f"{BASE_URL}/projetos", headers=headers_professor, json={
         "titulo": "Projeto para teste de matrícula",
@@ -36,17 +36,18 @@ def projeto_publicado_para_matricula(context, headers_professor):
     context['projeto_id'] = projeto_id
 
 
-@when('eu envio POST para "/matriculas" com projeto_id 1')
-def matricular_projeto_1(context):
-    context['response'] = requests.post(
+@given("eu já estou matriculada nesse projeto")
+def ja_matriculada(context, headers_estudante):
+    response = requests.post(
         f"{BASE_URL}/matriculas",
-        headers=context['headers'],
-        json={"projeto_id": 1}
+        headers=headers_estudante,
+        json={"projeto_id": context['projeto_id']}
     )
+    assert response.status_code == 201, f"Falha ao criar matrícula: {response.text}"
 
 
-@when('eu me matriculo nesse projeto')
-def matricular_projeto_novo(context):
+@when("eu me matriculo nesse projeto")
+def matricular_projeto(context):
     context['response'] = requests.post(
         f"{BASE_URL}/matriculas",
         headers=context['headers'],
