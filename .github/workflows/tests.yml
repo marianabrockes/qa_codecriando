@@ -1,0 +1,193 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  api-tests:
+    name: API tests (pytest-bdd)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: codecriando
+          POSTGRES_PASSWORD: codecriando123
+          POSTGRES_DB: codecriando
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Start API
+        env:
+          DATABASE_URL: postgresql://codecriando:codecriando123@localhost:5432/codecriando
+          JWT_SECRET_KEY: ci-test-secret-key
+          FLASK_ENV: testing
+        run: |
+          cd backend
+          python run.py &
+          sleep 8
+
+      - name: Wait for API to be ready
+        run: |
+          for i in {1..20}; do
+            if curl -s http://localhost:5001/apidocs > /dev/null; then
+              echo "API is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not start in time"
+          exit 1
+
+      - name: Seed test data
+        run: |
+          curl -s -X POST http://localhost:5001/register \
+            -H "Content-Type: application/json" \
+            -d '{"nome":"Manu Silva","email":"manu@email.com","senha":"123456","perfil":"professor"}'
+          curl -s -X POST http://localhost:5001/register \
+            -H "Content-Type: application/json" \
+            -d '{"nome":"Lua Santos","email":"lua@email.com","senha":"123456","perfil":"estudante"}'
+
+      - name: Run API tests
+        run: python -m pytest tests/api/ -v
+
+  e2e-tests:
+    name: E2E tests (Cypress)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: codecriando
+          POSTGRES_PASSWORD: codecriando123
+          POSTGRES_DB: codecriando
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Start API
+        env:
+          DATABASE_URL: postgresql://codecriando:codecriando123@localhost:5432/codecriando
+          JWT_SECRET_KEY: ci-test-secret-key
+          FLASK_ENV: testing
+        run: |
+          cd backend
+          python run.py &
+          sleep 8
+
+      - name: Wait for API to be ready
+        run: |
+          for i in {1..20}; do
+            if curl -s http://localhost:5001/apidocs > /dev/null; then
+              echo "API is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not start in time"
+          exit 1
+
+      - name: Seed test data
+        run: |
+          curl -s -X POST http://localhost:5001/register \
+            -H "Content-Type: application/json" \
+            -d '{"nome":"Manu Silva","email":"manu@email.com","senha":"123456","perfil":"professor"}'
+          curl -s -X POST http://localhost:5001/register \
+            -H "Content-Type: application/json" \
+            -d '{"nome":"Lua Santos","email":"lua@email.com","senha":"123456","perfil":"estudante"}'
+
+      - name: Create seed project with stage
+        run: |
+          TOKEN=$(curl -s -X POST http://localhost:5001/login \
+            -H "Content-Type: application/json" \
+            -d '{"email":"manu@email.com","senha":"123456"}' | python -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+          PROJECT_ID=$(curl -s -X POST http://localhost:5001/projetos \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -d '{"titulo":"Minha primeira pagina web","descricao":"Aprenda a criar uma pagina HTML do zero","nivel":"iniciante"}' | python -c "import sys,json; print(json.load(sys.stdin)['projeto']['id'])")
+
+          curl -s -X POST http://localhost:5001/projetos/$PROJECT_ID/etapas \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -d '{"titulo":"Crie sua primeira tag HTML","instrucao":"Use a tag h1 para escrever um titulo","ordem":1}'
+
+          curl -s -X PATCH http://localhost:5001/projetos/$PROJECT_ID/publicar \
+            -H "Authorization: Bearer $TOKEN"
+
+          STUDENT_TOKEN=$(curl -s -X POST http://localhost:5001/login \
+            -H "Content-Type: application/json" \
+            -d '{"email":"lua@email.com","senha":"123456"}' | python -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+          curl -s -X POST http://localhost:5001/matriculas \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $STUDENT_TOKEN" \
+            -d "{\"projeto_id\":$PROJECT_ID}"
+
+      - name: Serve frontend
+        run: |
+          cd frontend
+          python -m http.server 8080 &
+          sleep 3
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: tests/e2e
+          wait-on: "http://localhost:8080"
+          wait-on-timeout: 60
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/e2e/cypress/screenshots
+          if-no-files-found: ignore
