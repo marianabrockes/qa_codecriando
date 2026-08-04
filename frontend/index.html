@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeCriando</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- LOGIN -->
+    <div id="page-login">
+      <div class="login-card">
+        <div class="login-brand">
+          <span class="mono-accent">{</span> CodeCriando
+          <span class="mono-accent">}</span>
+        </div>
+        <p class="login-tagline">
+          Plataforma de projetos de programação para crianças
+        </p>
+        <form id="form-login">
+          <div class="field">
+            <label for="login-email">Email</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="seu@email.com"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="login-senha">Senha</label>
+            <input
+              type="password"
+              id="login-senha"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div id="login-error" class="alert alert-error hidden"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="btn-login">
+            Entrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- APP -->
+    <div id="app" class="hidden">
+      <nav id="topnav">
+        <div class="nav-inner">
+          <div class="nav-brand">
+            <span class="mono-accent">{</span> CodeCriando
+            <span class="mono-accent">}</span>
+          </div>
+          <div class="nav-right">
+            <span id="nav-username" class="nav-username"></span>
+            <button class="btn btn-ghost btn-sm" id="btn-logout">Sair</button>
+          </div>
+        </div>
+      </nav>
+
+      <main id="main">
+        <!-- PROFESSOR: PROJETOS -->
+        <div id="view-prof-list" class="view hidden">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">Meus projetos</h1>
+              <p class="view-desc">
+                Gerencie projetos e acompanhe as submissões
+              </p>
+            </div>
+            <button class="btn btn-primary" id="btn-new-project">
+              + Novo projeto
+            </button>
+          </div>
+          <div id="prof-projects-grid" class="grid"></div>
+          <div id="prof-projects-empty" class="empty hidden">
+            <div class="empty-icon">📁</div>
+            <p class="empty-title">Nenhum projeto publicado ainda</p>
+            <p class="empty-desc">Crie um projeto para começar.</p>
+          </div>
+        </div>
+
+        <!-- PROFESSOR: CRIAR PROJETO -->
+        <div id="view-prof-create" class="view hidden">
+          <div class="view-header">
+            <div>
+              <button class="btn-back" id="back-from-create">← Voltar</button>
+              <h1 class="view-title">Novo projeto</h1>
+            </div>
+          </div>
+          <div class="form-wrap">
+            <div class="form-card">
+              <h2 class="form-card-title">Informações do projeto</h2>
+              <form id="form-create-project">
+                <div class="field">
+                  <label for="proj-titulo">Título</label>
+                  <input
+                    type="text"
+                    id="proj-titulo"
+                    placeholder="Ex: Minha primeira página web"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="proj-descricao">Descrição</label>
+                  <textarea
+                    id="proj-descricao"
+                    rows="3"
+                    placeholder="O que a estudante vai aprender..."
+                    required
+                  ></textarea>
+                </div>
+                <div class="field">
+                  <label for="proj-nivel">Nível</label>
+                  <select id="proj-nivel" required>
+                    <option value="">Selecione um nível</option>
+                    <option value="iniciante">Iniciante</option>
+                    <option value="intermediario">Intermediário</option>
+                    <option value="avancado">Avançado</option>
+                  </select>
+                </div>
+                <div
+                  id="create-proj-error"
+                  class="alert alert-error hidden"
+                ></div>
+                <button type="submit" class="btn btn-primary">
+                  Criar projeto
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFESSOR: DETALHE DO PROJETO -->
+        <div id="view-prof-detail" class="view hidden">
+          <div class="view-header">
+            <div>
+              <button class="btn-back" id="back-from-detail">← Voltar</button>
+              <h1 class="view-title" id="detail-title"></h1>
+              <div id="detail-meta" class="meta-row"></div>
+            </div>
+            <button class="btn btn-outline" id="btn-publish">
+              Publicar projeto
+            </button>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <div class="section-card">
+                <div class="section-head">
+                  <h2 class="section-title">Etapas</h2>
+                </div>
+                <div id="stages-list"></div>
+                <div id="stages-empty" class="inline-empty hidden">
+                  Nenhuma etapa ainda.
+                </div>
+                <div id="add-stage-block">
+                  <div class="divider"></div>
+                  <h3 class="add-block-title">Adicionar etapa</h3>
+                  <form id="form-add-stage">
+                    <div class="field">
+                      <label for="stage-titulo">Título</label>
+                      <input
+                        type="text"
+                        id="stage-titulo"
+                        placeholder="Ex: Crie sua primeira tag HTML"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="stage-instrucao">Instrução</label>
+                      <textarea
+                        id="stage-instrucao"
+                        rows="2"
+                        placeholder="O que a estudante deve fazer..."
+                        required
+                      ></textarea>
+                    </div>
+                    <div class="field">
+                      <label for="stage-ordem">Ordem</label>
+                      <input
+                        type="number"
+                        id="stage-ordem"
+                        min="1"
+                        value="1"
+                        style="max-width: 80px"
+                        required
+                      />
+                    </div>
+                    <div
+                      id="add-stage-error"
+                      class="alert alert-error hidden"
+                    ></div>
+                    <button type="submit" class="btn btn-secondary">
+                      Adicionar etapa
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="detail-col">
+              <div class="section-card">
+                <div class="section-head">
+                  <h2 class="section-title">Submissões</h2>
+                </div>
+                <div id="subs-list"></div>
+                <div id="subs-empty" class="inline-empty hidden">
+                  Nenhuma submissão ainda.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESTUDANTE: PROJETOS -->
+        <div id="view-student-list" class="view hidden">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">Projetos disponíveis</h1>
+              <p class="view-desc">Explore os projetos e comece a aprender</p>
+            </div>
+          </div>
+          <div id="student-projects-grid" class="grid"></div>
+          <div id="student-projects-empty" class="empty hidden">
+            <div class="empty-icon">🔍</div>
+            <p class="empty-title">Nenhum projeto disponível</p>
+            <p class="empty-desc">
+              Novos projetos aparecerão aqui quando forem publicados.
+            </p>
+          </div>
+        </div>
+
+        <!-- ESTUDANTE: DETALHE DO PROJETO -->
+        <div id="view-student-detail" class="view hidden">
+          <div class="view-header">
+            <div>
+              <button class="btn-back" id="back-from-student-detail">
+                ← Voltar
+              </button>
+              <h1 class="view-title" id="student-detail-title"></h1>
+              <div id="student-detail-meta" class="meta-row"></div>
+            </div>
+          </div>
+          <div id="student-detail-content"></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- MODAL AVALIAÇÃO -->
+    <div id="modal-eval" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-head">
+          <h2 class="modal-title">Avaliar submissão</h2>
+          <button class="modal-close" id="close-modal">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="field">
+            <label>Conteúdo enviado</label>
+            <div id="modal-content" class="content-preview"></div>
+          </div>
+          <div class="field">
+            <label for="eval-feedback">Feedback</label>
+            <textarea
+              id="eval-feedback"
+              rows="3"
+              placeholder="Escreva um feedback para a estudante..."
+            ></textarea>
+          </div>
+          <div id="eval-error" class="alert alert-error hidden"></div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline-error" id="btn-reject">
+            Reprovar
+          </button>
+          <button class="btn btn-primary" id="btn-approve">Aprovar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
