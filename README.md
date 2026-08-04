@@ -1,174 +1,177 @@
 # CodeCriando
 
-A portfolio project built to demonstrate hands-on experience in API troubleshooting, bug documentation, and technical support workflows — developed through a complete QA and support cycle on a Flask/PostgreSQL REST API.
+**A full-stack EdTech platform built as a working environment for a complete QA cycle and for API troubleshooting and support documentation.**
 
-CodeCriando is an EdTech platform where teachers create guided programming projects for children. Projects are organized into sequential stages, and each stage requires a submission that gets reviewed and approved before the student can move on.
+CodeCriando is a platform where teachers create guided programming projects for children. Projects are organized into sequential stages, and each stage requires a submission that gets reviewed and approved before the student can move on. The business rules are real and enforced: you can't publish a project without stages, you can't skip a stage, you can't delete a project with active enrollments.
 
-This repository exists because I wanted a project that would show how I actually work, not just that I know the tools. That means running a real testing cycle: writing user stories with acceptance criteria, planning what to test and why, executing every case by hand, documenting bugs the way a support engineer would, fixing them, and retesting. It also means building the documentation a support team would actually use: an error reference, a troubleshooting runbook, a Postman guide, and a formal incident report.
-
----
-
-## What this project covers
-
-**QA cycle**
-
-- 12 user stories across 5 epics with DADO/QUANDO/ENTAO acceptance criteria
-- Formal test plan covering scope, test types, entry and exit criteria, and risks
-- 25 test cases executed manually in Postman, covering happy path, expected errors, and edge cases
-- 2 bugs and 1 behavior inconsistency found, documented with severity, reproduction steps, root cause, and applied fix
-- 22 automated API tests with PyTest and pytest-bdd, all passing
-
-**Technical support documentation**
-
-- API error reference: every status code and error message the API returns, with causes and resolution steps
-- Troubleshooting runbook: step-by-step diagnosis for the most common operational issues
-- Postman guide: how to set up the collection, authenticate, and reproduce error scenarios
-- Incident report: a formal write-up of BUG-002, from symptom to prevention
-- Structured logging on all routes and JWT error handlers
-
-**Backend**
-
-- Flask REST API with JWT authentication and PostgreSQL
-- 18 endpoints across 5 domains, documented via Swagger
-- Business rules enforced at the API layer: sequential stage progression, enrollment validation, role-based access control
+I built the platform so I'd have something real to test, break, diagnose, and fix. The result covers two connected tracks: a full QA cycle from requirements through automated regression, and the support documentation a team would actually reach for when something goes wrong.
 
 ---
 
-## Personas
+## At a glance
 
-**Manu (teacher):** creates guided programming projects, adds stages, publishes projects, and reviews student submissions.
-
-**Lua (student):** enrolls in published projects, submits solutions for each stage, and needs the previous stage approved before submitting the next one.
-
----
-
-## Bugs found and fixed
-
-| ID      | Title                                                                                 | Severity | Status             |
-| ------- | ------------------------------------------------------------------------------------- | -------- | ------------------ |
-| BUG-001 | `criado_em` field returns timestamps with microseconds on every endpoint              | Low      | Fixed and retested |
-| BUG-002 | `POST /register` without a body returns raw HTML with an internal error exposed       | Medium   | Fixed and retested |
-| OBS-001 | Inconsistent error field between the app's own errors and Flask-JWT-Extended's errors | Low      | Fixed and retested |
-
-Full reproduction steps, root cause, and applied fix: `tests/docs/relatorio_de_bugs.md`
-Formal incident report for BUG-002: `docs/incident-report-bug-002.md`
+|                          |                                                             |
+| ------------------------ | ----------------------------------------------------------- |
+| **12 user stories**      | 5 epics, acceptance criteria in Given/When/Then             |
+| **25 manual test cases** | Executed in Postman: happy path, error handling, edge cases |
+| **43 automated tests**   | 22 API (pytest-bdd) + 21 E2E (Cypress), all passing in CI   |
+| **10 SQL queries**       | Data integrity validation directly in PostgreSQL            |
+| **3 defects**            | Found, documented with root cause, fixed, and retested      |
+| **4 support documents**  | Error reference, runbook, incident report, Postman guide    |
+| **CI pipeline**          | GitHub Actions running both suites on every push            |
 
 ---
 
-## API Endpoints
+## QA cycle
 
-| Domain      | Method | Route                               |
-| ----------- | ------ | ----------------------------------- |
-| Auth        | POST   | `/register`                         |
-| Auth        | POST   | `/login`                            |
-| Projects    | POST   | `/projetos`                         |
-| Projects    | GET    | `/projetos`                         |
-| Projects    | GET    | `/projetos/<id>`                    |
-| Projects    | PUT    | `/projetos/<id>`                    |
-| Projects    | DELETE | `/projetos/<id>`                    |
-| Projects    | PATCH  | `/projetos/<id>/publicar`           |
-| Stages      | POST   | `/projetos/<projeto_id>/etapas`     |
-| Stages      | PUT    | `/etapas/<id>`                      |
-| Stages      | DELETE | `/etapas/<id>`                      |
-| Enrollments | POST   | `/matriculas`                       |
-| Enrollments | GET    | `/matriculas`                       |
-| Enrollments | DELETE | `/matriculas/<id>`                  |
-| Submissions | POST   | `/submissoes`                       |
-| Submissions | GET    | `/submissoes/<id>`                  |
-| Submissions | PATCH  | `/submissoes/<id>/avaliar`          |
-| Submissions | GET    | `/projetos/<projeto_id>/submissoes` |
+**Requirements** — [12 user stories](tests/docs/historias_de_usuario.md) across 5 epics (authentication, projects, stages, enrollments, submissions), each with acceptance criteria written in Given/When/Then format.
 
-Full error reference for all endpoints: `docs/error-reference.md`
+**Test planning** — A [formal test plan](tests/docs/plano_de_testes.md) defining scope and exclusions, test types and tools, the 16 features under test with priority, entry and exit criteria, risk analysis with mitigations, and the test environment.
+
+**Manual execution** — [25 test cases](tests/docs/casos_de_teste.md) executed by hand in Postman, organized by feature. Each one documents preconditions, test data, steps, expected result, and actual result. Coverage includes the happy path, expected errors (400, 401, 403, 404), permission boundaries between roles, and edge cases like empty request bodies and out-of-order submissions. The [Postman collection](tests/docs/codecriando_api.json) is exported and version-controlled.
+
+**Defect management** — Three issues found during execution, each documented in the [bug report](tests/docs/relatorio_de_bugs.md) with severity, reproduction steps, root cause analysis, and the fix that was actually applied. All three were fixed, retested, and are now covered by automated tests.
+
+**API automation** — 22 tests using pytest-bdd, with Gherkin feature files and step definitions covering authentication, projects, enrollments, and submissions. Every scenario provisions its own data through the API, so the suite runs against a clean database.
+
+**E2E automation** — 21 Cypress tests covering login and logout, the full teacher flow (create project, add stages, publish, evaluate submissions), and the full student flow (browse projects, enroll, submit solutions), including validation of blocked actions.
+
+**Database validation** — [10 SQL queries](tests/docs/queries_sql.md) verifying what the API reported actually landed correctly in PostgreSQL: password hashing, referential integrity, orphaned records, and business rule consistency at the persistence layer.
+
+**Continuous integration** — A [GitHub Actions pipeline](.github/workflows/tests.yml) that provisions PostgreSQL, starts the API, seeds test data, serves the frontend, and runs both test suites on every push.
 
 ---
 
-## Tech Stack
+## Support documentation
 
-- **Python 3.11 / Flask** — API framework
-- **Flask-JWT-Extended** — authentication
-- **Flask-SQLAlchemy / PostgreSQL** — data persistence
-- **Flasgger** — Swagger documentation
-- **Postman** — manual API testing and collection
-- **PyTest / pytest-bdd** — automated API testing
-- **Docker / Docker Compose** — local environment
+These are the artifacts I'd want to have if I were the one taking the ticket.
+
+**[Error reference](docs/error-reference.md)** — Every status code and error message the API returns, with the likely cause and the resolution step. Organized by status code so you can go straight from a customer's screenshot to an answer.
+
+**[Troubleshooting runbook](docs/troubleshooting-runbook.md)** — Diagnosis steps for six operational failures: API not responding, database connection errors on startup, blanket 401s, unclear 400s, blocked stage submissions, and undeletable projects. Each one has the commands or SQL to run, the common causes, and a quick-reference table at the end.
+
+**[Incident report](docs/incident-report-bug-002.md)** — A full write-up of the most serious defect found: an endpoint returning raw HTML with an internal Python error exposed. Covers the reported symptom, observed behavior, reproduction steps, root cause, the fix, verification, and what would prevent it from recurring.
+
+**[Postman guide](docs/postman-guide.md)** — How to set up the collection, configure the environment, populate tokens, and deliberately reproduce each documented error scenario.
+
+**Structured logging** — The application logs every request with its status code, and flags authentication failures with context (missing token, expired token, invalid token) so problems can be diagnosed from logs rather than reproduced by hand.
 
 ---
 
-## Running Locally
+## Defects found
 
-**Requirements:** Docker, Docker Compose
+| ID      | Issue                                                           | Severity | Root cause                                                     |
+| ------- | --------------------------------------------------------------- | -------- | -------------------------------------------------------------- |
+| BUG-001 | Timestamps returned with microseconds on every endpoint         | Low      | `.isoformat()` includes microseconds by default                |
+| BUG-002 | Empty request body returned HTML with an internal error exposed | Medium   | Unhandled Flask exception bypassed the app's JSON error path   |
+| OBS-001 | Auth errors used `msg` while every other error used `erro`      | Low      | Flask-JWT-Extended's default response format wasn't overridden |
+
+**A note on BUG-002:** the fix that seemed obvious wasn't the one that worked. Adding a null check after `request.get_json()` looked correct, but the exception was raised inside `get_json()` before the check ever ran. The actual fix was `get_json(silent=True)`, which returns `None` instead of raising, letting the guard do its job. Retesting is what surfaced that.
+
+---
+
+## What the CI pipeline caught
+
+Two API tests passed locally and failed on the first CI run. Both depended on specific project IDs that existed in my local database but not in the clean one CI creates from scratch.
+
+That's a real defect in the tests, not a CI quirk — a suite that only passes on one machine isn't a regression suite. The fix was making every scenario provision its own data through the API before asserting anything. Worth noting because it's the kind of thing that stays invisible until something forces a clean environment.
+
+---
+
+## Running locally
+
+**Requirements:** Docker, Docker Compose, Python 3.11, Node.js
 
 ```bash
-# 1. Clone
 git clone https://github.com/marianabrockes/qa_codecriando.git
 cd qa_codecriando
 
-# 2. Configure environment variables
 cp backend/.env.example backend/.env
-# edit backend/.env with your DATABASE_URL and JWT_SECRET_KEY
+# set DATABASE_URL and JWT_SECRET_KEY
 
-# 3. Start the environment
 docker compose up
 ```
 
-API available at `http://localhost:5001`
-Swagger docs at `http://localhost:5001/apidocs`
+API at `http://localhost:5001` and Swagger at `http://localhost:5001/apidocs`
 
-**Running the automated tests:**
+**Frontend** (separate terminal):
 
 ```bash
-source backend/.venv/bin/activate
+cd frontend && python3 -m http.server 8080
+```
+
+**API tests:**
+
+```bash
 python -m pytest tests/api/ -v
 ```
 
-For troubleshooting the local environment, see `docs/troubleshooting-runbook.md`.
+**E2E tests** (API and frontend must be running):
+
+```bash
+cd tests/e2e && npx cypress run
+```
+
+Stuck? The [troubleshooting runbook](docs/troubleshooting-runbook.md) covers the common failures.
 
 ---
 
-## Repository Structure
+## Stack
+
+**Backend** — Python, Flask, PostgreSQL, SQLAlchemy, JWT, Flasgger, structured logging
+
+**Frontend** — HTML, CSS, JavaScript (no framework)
+
+**Testing** — Postman, pytest-bdd, Cypress, SQL
+
+**Infrastructure** — Docker, Docker Compose, GitHub Actions
+
+---
+
+## API
+
+18 endpoints across 5 domains. Full error documentation in the [error reference](docs/error-reference.md).
+
+| Domain      | Endpoints                                                                                                                                    |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Auth        | `POST /register` · `POST /login`                                                                                                             |
+| Projects    | `POST /projetos` · `GET /projetos` · `GET /projetos/<id>` · `PUT /projetos/<id>` · `DELETE /projetos/<id>` · `PATCH /projetos/<id>/publicar` |
+| Stages      | `POST /projetos/<id>/etapas` · `PUT /etapas/<id>` · `DELETE /etapas/<id>`                                                                    |
+| Enrollments | `POST /matriculas` · `GET /matriculas` · `DELETE /matriculas/<id>`                                                                           |
+| Submissions | `POST /submissoes` · `GET /submissoes/<id>` · `PATCH /submissoes/<id>/avaliar` · `GET /projetos/<id>/submissoes`                             |
+
+---
+
+## Repository structure
 
 ```
 qa_codecriando/
+├── .github/workflows/
+│   └── tests.yml                   # CI: API + E2E on every push
 ├── backend/
-│   ├── app/
-│   │   ├── models/         # usuario, projeto, etapa, matricula, submissao
-│   │   └── routes/         # auth, projetos, etapas, matriculas, submissoes
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   └── run.py
+│   └── app/
+│       ├── models/                 # usuario, projeto, etapa, matricula, submissao
+│       └── routes/                 # auth, projetos, etapas, matriculas, submissoes
+├── frontend/                       # HTML, CSS, JS
 ├── docs/
-│   ├── error-reference.md          # all status codes and error messages
-│   ├── incident-report-bug-002.md  # formal incident report
-│   ├── postman-guide.md            # collection setup and usage
-│   └── troubleshooting-runbook.md  # operational issue diagnosis
-├── tests/
-│   ├── api/
-│   │   ├── features/       # Gherkin scenarios (auth, projetos, matriculas, submissoes)
-│   │   └── steps/          # pytest-bdd step definitions and conftest
-│   └── docs/
-│       ├── historias_de_usuario.md
-│       ├── plano_de_testes.md
-│       ├── casos_de_teste.md
-│       ├── relatorio_de_bugs.md
-│       ├── queries_sql.md
-│       └── codecriando_api.json
-├── docker-compose.yml
-└── README.md
+│   ├── error-reference.md          # status codes, causes, resolutions
+│   ├── troubleshooting-runbook.md  # operational diagnosis
+│   ├── incident-report-bug-002.md  # formal incident write-up
+│   └── postman-guide.md            # collection setup and error reproduction
+└── tests/
+    ├── api/
+    │   ├── features/               # Gherkin scenarios
+    │   └── steps/                  # pytest-bdd step definitions
+    ├── e2e/                        # Cypress specs
+    └── docs/
+        ├── historias_de_usuario.md
+        ├── plano_de_testes.md
+        ├── casos_de_teste.md
+        ├── relatorio_de_bugs.md
+        ├── queries_sql.md
+        └── codecriando_api.json    # exported Postman collection
 ```
 
 ---
 
-## Roadmap
-
-- [x] User stories and test plan
-- [x] 25 manual test cases executed in Postman
-- [x] Bug documentation, fixes, and retesting
-- [x] 22 automated API tests with PyTest and pytest-bdd
-- [x] SQL validation queries
-- [x] API error reference
-- [x] Troubleshooting runbook
-- [x] Incident report
-- [x] Structured logging
-- [ ] Frontend (HTML/CSS/JS)
-- [ ] End-to-end tests with Cypress
-- [ ] CI pipeline with GitHub Actions
+Built by [Mariana Brockes](https://linkedin.com/in/marianabrockes).
